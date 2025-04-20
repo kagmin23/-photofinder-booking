@@ -1,0 +1,5 @@
+.ant-table-xs .ant-table-thead > tr > th,
+.ant-table-xs .ant-table-tbody > tr > td,
+.ant-table-xs .ant-pagination {
+    font-size: 12px !important;
+}
