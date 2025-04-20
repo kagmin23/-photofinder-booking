@@ -1,4 +1,6 @@
+import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import type { SchemaOf } from "yup"; // 👈 thêm import này
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoChevronBackOutline } from "react-icons/io5";
@@ -9,22 +11,16 @@ import { object, string } from "yup";
 import { registerUser } from "../api/register";
 import { SignupRQ } from "../types";
 
-const schema = object({
-  username: string().required("Vui lòng nhập tên").trim(),
-  email: string()
-    .email("Email không hợp lệ")
-    .required(" Vui lòng nhập email")
-    .trim(),
-  phone: string().required(" Vui lòng nhập số điện thoại").trim(),
-  password: string().required(" Vui lòng nhập mật khẩu").trim(),
-  profilePic: string()
-    .url("URL không hợp lệ")
-    .required("Vui lòng nhập link ảnh đại diện")
-    .trim(),
-  role: string()
+const schema: SchemaOf<SignupRQ> = yup.object({
+  username: yup.string().required("Vui lòng nhập tên").trim(),
+  email: yup.string().email("Email không hợp lệ").required("Vui lòng nhập email").trim(),
+  phone: yup.string().required("Vui lòng nhập số điện thoại").trim(),
+  password: yup.string().required("Vui lòng nhập mật khẩu").trim(),
+  profilePic: yup.string().url("URL không hợp lệ").required("Vui lòng nhập link ảnh đại diện").trim(),
+  role: yup.mixed<"customer" | "photographer">()
     .oneOf(["customer", "photographer"], "Vai trò không hợp lệ")
-    .default("customer"),
-});
+    .default("customer")
+}).required();
 
 export default function Signup() {
   const {
