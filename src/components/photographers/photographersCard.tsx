@@ -13,7 +13,6 @@ export interface PhotographerProps {
 
 const PhotographerCard: React.FC<PhotographerProps> = ({
   photographerId,
-  userId,
   bio,
   portfolioUrl,
   rating,
