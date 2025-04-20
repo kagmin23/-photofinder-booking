@@ -8,7 +8,6 @@ import { Outlet, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Layout } from "./layouts";
 import Dashboard from "./pages/admin";
-import Album from "./pages/album.$id";
 import Chatbox from "./pages/chatbox/chatbox";
 import MessageList from "./pages/chatbox/messenger";
 import UserDashboard from "./pages/dashboardUser/dashboard";
@@ -25,7 +24,6 @@ import PhotographerDashboard from "./pages/profilePhotographer/dashboard/dashboa
 import PhotographerProfile from "./pages/profilePhotographer/profilePhotographer";
 import UserProfile from "./pages/profileUser";
 import Signup from "./pages/signup";
-import SignupVerify from "./pages/signup.verify";
 
 function App() {
   const [queryClient] = useState(
@@ -62,7 +60,6 @@ function App() {
           <Route index element={<HomeNoLogin />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/signup/verify" element={<SignupVerify />} />
         </Route>
 
         {/* user */}
@@ -85,7 +82,6 @@ function App() {
           path="/user/photographer/:id/packages"
           element={<PhotographerPackagesDetails />}
         />
-        <Route path="/album/:id" element={<Album />} />
         <Route path="/user/package" element={<PhotographyPackages />} />
 
         {/* photographer */}
@@ -103,7 +99,6 @@ function App() {
           path="/photographer/profile"
           element={<PhotographerProfile />}
         />
-        <Route path="/album/:id" element={<Album />} />
         <Route
           path="/photographer/package"
           element={<PhotographyPackages />}

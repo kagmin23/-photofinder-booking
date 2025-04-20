@@ -5,7 +5,7 @@ import {
     IoOptionsOutline,
     IoSearchOutline
 } from "react-icons/io5";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Footer, Header, PhotoPost } from "../components";
 
 const landscape = [
@@ -60,7 +60,6 @@ const food = [
 ];
 
 export default function Home() {
-  const navigate = useNavigate();
 
   return (
     <div className="flex h-full w-full flex-col pb-10">

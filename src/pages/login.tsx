@@ -64,14 +64,6 @@ export default function Login() {
           try {
             const decoded: any = jwtDecode(accessToken);
 
-            // Extract user information directly from the JWT if profile API is not working
-            const userInfo = {
-              userId: decoded.UserId || decoded.userId || decoded.sub,
-              email: decoded.Email || decoded.email,
-              name: decoded.Name || decoded.name,
-              role: decoded.Role || decoded.role,
-            };
-
             // Try to fetch complete profile, but don't block navigation if it fails
             try {
               const profileResponse = await getProfile();
