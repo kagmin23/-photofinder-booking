@@ -19,11 +19,8 @@ export const createBooking = async (
       );
       return response.data;
     } catch (error: any) {
-      return {
-        success: false,
-        message: error.response?.data?.message || 'Booking failed',
-        errors: error.response?.data?.errors || error,
-      };
+        console.error('Error creating booking:', error);
+        throw new Error(error.response?.data?.message || 'Failed to create booking');
     }
   };
   
