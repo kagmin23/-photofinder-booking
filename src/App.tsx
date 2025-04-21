@@ -75,7 +75,7 @@ function App() {
         <Route path="/user/dashboard" element={<UserDashboard />} />
         <Route path="/user/transactions" element={<UserTransactions />} />
         <Route path="/user/transactions/booking/:id" element={<BookingDetail />} />
-        <Route path="/user/transactions/booking/payment-success" element={<PaymentSuccess />} />
+        <Route path="/user/transactions/booking/payment-success?" element={<PaymentSuccess />} />
         <Route
           path="/user/packages/:id"
           element={<PhotographyPackagesDetails />}
