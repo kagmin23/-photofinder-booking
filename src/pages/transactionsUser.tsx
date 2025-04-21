@@ -1,9 +1,9 @@
-import { Select, Table, Tag, message } from "antd";
+import { Modal, Select, Table, Tag, message } from "antd";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { getUserBookings } from "../api/bookings";
+import { deleteBooking, getUserBookings } from "../api/bookings";
 import { BookingResponse } from "../types";
 
 const { Option } = Select;
@@ -103,17 +103,63 @@ const UserTransactions = () => {
           <Tag
             color={color}
             className="cursor-pointer hover:opacity-80"
-            onClick={() => navigate(`/user/transactions/booking/${record.bookingId}`)}
+            onClick={() =>
+              navigate(`/user/transactions/booking/${record.bookingId}`)
+            }
           >
             {status}
           </Tag>
         );
       },
     },
+    {
+      title: "Actions",
+      key: "actions",
+      align: "center" as "center",
+      render: (_: any, record: BookingResponse) => {
+        const handleCancel = () => {
+          Modal.confirm({
+            title: "Xác nhận huỷ giao dịch",
+            content: `Bạn có chắc muốn huỷ giao dịch với Booking: ${record.bookingId}?`,
+            okText: "Huỷ giao dịch",
+            okType: "danger",
+            cancelText: "Không",
+            onOk: async () => {
+              try {
+                await deleteBooking(record.bookingId);
+                message.success("Huỷ giao dịch thành công!");
+
+                // Cập nhật danh sách sau khi huỷ
+                setBookings((prev) =>
+                  prev.map((b) =>
+                    b.bookingId === record.bookingId
+                      ? { ...b, status: "Cancelled" }
+                      : b
+                  )
+                );
+              } catch (err: any) {
+                message.error(err.message);
+              }
+            },
+          });
+        };
+
+        return record.status !== "Cancelled" ? (
+          <button
+            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+            onClick={handleCancel}
+          >
+            Huỷ Giao dịch
+          </button>
+        ) : (
+          <span className="text-gray-400 italic">Đã huỷ</span>
+        );
+      },
+    },
   ];
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-r from-[#cafbda] to-[#9bc1fb]">
+    <div className=" min-h-screen p-6 bg-gradient-to-r from-[#cafbda] to-[#9bc1fb]">
       <button
         onClick={() => navigate(-1)}
         className="absolute top-4 left-4 inline-flex items-center font-semibold text-[#9681FA]"
@@ -145,7 +191,7 @@ const UserTransactions = () => {
         rowKey="bookingId"
         loading={loading}
         bordered
-        pagination={{ pageSize: 10 }}
+        pagination={{ pageSize: 9 }}
       />
     </div>
   );

@@ -75,3 +75,25 @@ export const getBookingById = async (
     );
   }
 };
+
+export const deleteBooking = async (
+  bookingId: string | number
+): Promise<void> => {
+  const token = localStorage.getItem("authToken");
+
+  if (!token) {
+    throw new Error("Authentication token not found");
+  }
+
+  try {
+    await api.delete(`/api/bookings/${bookingId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (error: any) {
+    console.error("Error deleting booking:", error);
+
+    throw new Error(error.response?.data?.message || "Không thể huỷ giao dịch");
+  }
+};
