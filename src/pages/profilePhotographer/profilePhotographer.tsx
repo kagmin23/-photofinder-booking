@@ -19,7 +19,7 @@ import {
   IoChevronBackOutline,
   IoLogoFacebook,
   IoLogoTwitter,
-  IoSettingsOutline
+  IoSettingsOutline,
 } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { Album } from "../../types";
@@ -36,7 +36,7 @@ export default function PhotographerProfile() {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    }),
+    })
   );
 
   function handleDragEnd(event: DragEndEvent) {
@@ -95,14 +95,13 @@ export default function PhotographerProfile() {
 
         {/* Packages */}
         <section className="mb-12">
-          <PackageSection photographerId={photographerId} />
+          <PackageSection />{" "}
         </section>
 
         {/* Albums */}
         <section>
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-bold uppercase text-gray-800">
-            </h2>
+            <h2 className="text-2xl font-bold uppercase text-gray-800"></h2>
           </div>
 
           <DndContext
