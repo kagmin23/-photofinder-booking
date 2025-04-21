@@ -93,9 +93,7 @@ function App() {
         {/* photographer */}
         <Route index path="/photographer/home" element={<Home />} />
         <Route path="/photographer/messenger" element={<MessageList />} />
-        <Route
-          path="/photographer/photographer"
-          element={<PhotographersList />}
+        <Route path="/photographer/photographer" element={<PhotographersList />}
         />
         <Route path="/photographer/:id" element={<PhotographerDetails />} />
         <Route path="/photographer/dashboard" element={<PhotographerDashboard />} />
