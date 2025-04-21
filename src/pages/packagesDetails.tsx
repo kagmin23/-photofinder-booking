@@ -71,7 +71,7 @@ const PhotographyPackagesDetails = () => {
       if (res) {
         message.success("Đặt lịch thành công!");
         handleCloseModal();
-        navigate(`/paymentflight?package_id=${pkg.packageId}`);
+        navigate(`/user/dashboard`);
       } else {
         message.error("Đặt lịch thất bại.");
       }
@@ -80,7 +80,7 @@ const PhotographyPackagesDetails = () => {
       message.error("Lỗi khi gọi API tạo booking.");
     }
   };
-  
+
   if (!pkg) {
     return (
       <div className="p-4 text-center text-gray-600">Đang tải chi tiết...</div>

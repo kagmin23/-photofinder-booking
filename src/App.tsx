@@ -8,6 +8,7 @@ import { Outlet, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Layout } from "./layouts";
 import Dashboard from "./pages/admin";
+import BookingDetail from "./pages/bookingDetails";
 import Chatbox from "./pages/chatbox/chatbox";
 import MessageList from "./pages/chatbox/messenger";
 import UserDashboard from "./pages/dashboardUser/dashboard";
@@ -16,6 +17,7 @@ import HomeNoLogin from "./pages/homeNoLogin";
 import Login from "./pages/login";
 import PhotographyPackages from "./pages/package";
 import PhotographyPackagesDetails from "./pages/packagesDetails";
+import PaymentSuccess from "./pages/paymentSuccess";
 import PhotographerDetails from "./pages/photographers/photographerDetails";
 import PhotographerPackagesDetails from "./pages/photographers/photographerPackages";
 import PhotographersList from "./pages/photographers/photographers";
@@ -24,6 +26,7 @@ import PhotographerDashboard from "./pages/profilePhotographer/dashboard/dashboa
 import PhotographerProfile from "./pages/profilePhotographer/profilePhotographer";
 import UserProfile from "./pages/profileUser";
 import Signup from "./pages/signup";
+import UserTransactions from "./pages/transactionsUser";
 
 function App() {
   const [queryClient] = useState(
@@ -70,6 +73,9 @@ function App() {
         <Route path="/user/profile" element={<UserProfile />} />
         <Route path="/user/photographer" element={<PhotographersList />} />
         <Route path="/user/dashboard" element={<UserDashboard />} />
+        <Route path="/user/transactions" element={<UserTransactions />} />
+        <Route path="/user/transactions/booking/:id" element={<BookingDetail />} />
+        <Route path="/user/transactions/booking/payment-success" element={<PaymentSuccess />} />
         <Route
           path="/user/packages/:id"
           element={<PhotographyPackagesDetails />}

@@ -2,11 +2,11 @@ import { Dropdown, Menu } from "antd";
 import { jwtDecode } from "jwt-decode";
 import _ from "lodash";
 import { useEffect, useState } from "react";
+import { AiOutlineTransaction } from "react-icons/ai";
 import { FaSignOutAlt, FaUser } from "react-icons/fa";
 import { GrAnalytics } from "react-icons/gr";
 import { IoNotifications, IoPerson, IoSearch } from "react-icons/io5";
 import { NavLink, useNavigate } from "react-router-dom";
-
 interface CustomJwtPayload {
   UserId: string;
   Email: string;
@@ -68,7 +68,7 @@ export const Header = () => {
         const decoded = jwtDecode<CustomJwtPayload>(token);
         const role = decoded.Role?.toLowerCase() || "user";
         setUserRole(role);
-        
+
         // Set navigation items based on role
         if (role === "photographer") {
           setNavBar(photographerNavItems);
@@ -76,7 +76,9 @@ export const Header = () => {
           setNavBar(userNavItems);
         } else {
           // Default to user navigation items for any other role
-          console.warn(`Unknown role detected: ${role}, defaulting to user navigation`);
+          console.warn(
+            `Unknown role detected: ${role}, defaulting to user navigation`
+          );
           setNavBar(userNavItems);
         }
       } catch (error) {
@@ -93,6 +95,15 @@ export const Header = () => {
       navigate("/photographer/dashboard");
     } else {
       navigate("/user/dashboard");
+    }
+  };
+
+  const handleTransactions = () => {
+    // Navigate to role-specific profile page
+    if (userRole === "photographer") {
+      navigate("/photographer/transactions");
+    } else {
+      navigate("/user/transactions");
     }
   };
 
@@ -122,6 +133,17 @@ export const Header = () => {
               className="flex w-full flex-row items-center gap-1.5 px-2 text-left hover:bg-gray-200"
             >
               <GrAnalytics /> Dashboard
+            </button>
+          ),
+        },
+        {
+          key: "1",
+          label: (
+            <button
+              onClick={handleTransactions}
+              className="flex w-full flex-row items-center gap-1.5 px-2 text-left hover:bg-gray-200"
+            >
+              <AiOutlineTransaction /> Transactions
             </button>
           ),
         },

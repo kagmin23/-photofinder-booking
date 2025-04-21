@@ -76,7 +76,7 @@ const PhotographerDashboard = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-r from-[#ffecd2] to-[#fcb69f] p-6">
+    <div className="relative min-h-screen  bg-gradient-to-r from-[#e0e7ff] to-[#ffe4e6] p-6">
       <button
         onClick={() => navigate(-1)}
         className="absolute top-4 left-4 inline-flex items-center font-semibold text-[#f57c00]"
