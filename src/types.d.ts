@@ -117,3 +117,41 @@ export interface BookingAnalytics {
   bookingAna: Record<string, number>;
   incomeAna: Record<string, number>;
 }
+export interface BookingRequest {
+  customerId: number;
+  photographerId: number;
+  eventDate: string; // ISO string
+  eventLocation: string;
+  status?: string; // optional nếu backend tự gán
+  totalPrice: number;
+}
+export interface BookingResponse {
+  bookingId: number;
+  customerId: number;
+  photographerId: number;
+  eventDate: string;
+  eventLocation: string;
+  status: string;
+  totalPrice: number;
+  createdAt: string;
+  updatedAt: string;
+  customer: {
+    userId: number;
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+    phoneNumber: string;
+    profilePicture: string | null;
+    createdAt: string;
+    updatedAt: string;
+    bookings: any[];
+    conversations: any[];
+    messages: any[];
+    notifications: any[];
+    photographer: any | null;
+  };
+  payments: any[];
+  photographer: any | null;
+  reviews: any[];
+}

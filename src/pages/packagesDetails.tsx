@@ -1,12 +1,24 @@
+import { Modal, message } from "antd";
 import { useEffect, useState } from "react";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
+import { createBooking } from "../api/bookings";
 import { getAllPackages } from "../api/package";
 import { PackageModel } from "../types";
+
+interface BookingRequest {
+  customerId: number;
+  photographerId: number;
+  eventDate: string;
+  eventLocation: string;
+  totalPrice: number;
+  status: "Pending" | "Confirmed" | "Completed" | "Cancelled";
+}
 
 const PhotographyPackagesDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [pkg, setPkg] = useState<PackageModel | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,7 +27,7 @@ const PhotographyPackagesDetails = () => {
         const response = await getAllPackages();
         if (response?.success && response?.data) {
           const selectedPkg = response.data.find(
-            (p: PackageModel) => p.packageId === Number(id),
+            (p: PackageModel) => p.packageId === Number(id)
           );
           setPkg(selectedPkg || null);
         }
@@ -27,12 +39,48 @@ const PhotographyPackagesDetails = () => {
     fetchData();
   }, [id]);
 
-  const handlePayment = () => {
-    if (pkg?.packageId) {
-      navigate(`/paymentflight?package_id=${pkg.packageId}`);
-    }
+  const handleBooking = () => {
+    setIsModalVisible(true);
   };
 
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleConfirmBooking = async () => {
+    const storedUser = localStorage.getItem("userProfile");
+    const userId = storedUser ? JSON.parse(storedUser).userId : null;
+  
+    if (!userId || !pkg?.photographerId || !pkg?.price) {
+      message.error("Thiếu thông tin để tạo booking");
+      return;
+    }
+  
+    const bookingData: BookingRequest = {
+      customerId: userId,
+      photographerId: pkg.photographerId,
+      eventDate: new Date().toISOString(),
+      eventLocation: "Ho Chi Minh City",
+      totalPrice: pkg.price,
+      status: "Pending",
+    };
+  
+    try {
+      const res = await createBooking(bookingData);
+      
+      if (res) {
+        message.success("Đặt lịch thành công!");
+        handleCloseModal();
+        navigate(`/paymentflight?package_id=${pkg.packageId}`);
+      } else {
+        message.error("Đặt lịch thất bại.");
+      }
+    } catch (error) {
+      console.error(error);
+      message.error("Lỗi khi gọi API tạo booking.");
+    }
+  };
+  
   if (!pkg) {
     return (
       <div className="p-4 text-center text-gray-600">Đang tải chi tiết...</div>
@@ -82,10 +130,10 @@ const PhotographyPackagesDetails = () => {
                 <strong>Thời lượng:</strong>{" "}
                 {pkg.duration ? `${pkg.duration} giờ` : "Đang cập nhật..."}
               </div>
-              {/* <div>
-                <strong>Photographer ID:</strong>{" "}
+              <div>
+                <strong>Photographer:</strong>{" "}
                 {pkg.photographerId || "Đang cập nhật..."}
-              </div> */}
+              </div>
               <div>
                 <strong>Ngày tạo:</strong>{" "}
                 {pkg.createdAt
@@ -98,24 +146,52 @@ const PhotographyPackagesDetails = () => {
           {/* VNPay Payment Section */}
           <div className="mt-4 border-t pt-6">
             <h3 className="mb-4 text-xl font-semibold text-gray-800">
-              Thanh toán qua VNPay
+              Tiến hành đặt lịch
             </h3>
-            <div className="flex flex-col justify-between items-center gap-4 rounded-xl bg-gray-100 p-4 shadow-inner md:flex-row">
+            <div className="flex flex-col justify-center items-center gap-4 rounded-xl bg-gray-100 p-4 shadow-inner md:flex-row">
               <button
-                onClick={handlePayment}
+                onClick={handleBooking}
                 className="rounded-md bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-700"
               >
-                THANH TOÁN ĐẶT LỊCH
+                ĐẶT LỊCH NGAY
               </button>
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp1v7T287-ikP1m7dEUbs2n1SbbLEqkMd1ZA&s"
-                alt="VNPay"
-                className="w-20 md:w-28"
-                />
             </div>
           </div>
         </div>
       </div>
+
+      {/* Modal xác nhận - Đã loại bỏ Select component cho status */}
+      <Modal
+        title="Xác nhận đặt lịch"
+        visible={isModalVisible}
+        onCancel={handleCloseModal}
+        onOk={handleConfirmBooking}
+        okText="Xác nhận"
+        cancelText="Hủy"
+      >
+        <p>
+          <strong>Photographer:</strong> {pkg.photographerId}
+        </p>
+        <p>
+          <strong>Gói chụp:</strong> {pkg.packageName}
+        </p>
+        <p>
+          <strong>Giá:</strong> {pkg.price?.toLocaleString()} VND
+        </p>
+        <p>
+          <strong>Thời lượng:</strong> {pkg.duration} giờ
+        </p>
+        <p>
+          <strong>Địa điểm:</strong> Ho Chi Minh City
+        </p>
+        <p>
+          <strong>Ngày:</strong> {new Date().toLocaleDateString("vi-VN")}
+        </p>
+        <div className="my-5 flex items-center space-x-4">
+          <p className="text-gray-700 w-25">Trạng thái:</p>
+          <p className="font-medium text-yellow-600">Pending</p> {/* Hiển thị trạng thái cố định */}
+        </div>
+      </Modal>
     </div>
   );
 };
