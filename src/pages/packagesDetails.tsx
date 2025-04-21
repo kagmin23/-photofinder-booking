@@ -71,7 +71,7 @@ const PhotographyPackagesDetails = () => {
       if (res) {
         message.success("Đặt lịch thành công!");
         handleCloseModal();
-        navigate(`/user/dashboard`);
+        navigate(`/user/transactions`);
       } else {
         message.error("Đặt lịch thất bại.");
       }
