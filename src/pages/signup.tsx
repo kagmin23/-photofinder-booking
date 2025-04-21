@@ -5,12 +5,12 @@ import { IoChevronBackOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import type { Schema } from "yup"; // 👈 sửa thành Schema
+import type { ObjectSchema } from "yup"; // 👈 Changed from Schema to ObjectSchema
 import * as yup from "yup";
 import { registerUser } from "../api/register";
 import { SignupRQ } from "../types";
 
-const schema: Schema<SignupRQ> = yup.object({
+const schema: ObjectSchema<SignupRQ> = yup.object({
   username: yup.string().required("Vui lòng nhập tên").trim(),
   email: yup.string().email("Email không hợp lệ").required("Vui lòng nhập email").trim(),
   phone: yup.string().required("Vui lòng nhập số điện thoại").trim(),

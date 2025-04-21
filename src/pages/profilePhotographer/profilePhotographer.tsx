@@ -23,14 +23,12 @@ import {
 } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { Album } from "../../types";
-import { getPhotographerIdFromToken } from "../../utils/getPhotographerId";
 import PackageSection from "./pkgSection";
 import SortableAlbum from "./sortableAlbum";
 
 export default function PhotographerProfile() {
   const [albums, setAlbums] = useState<Album[]>([]);
   const navigate = useNavigate();
-  const photographerId = getPhotographerIdFromToken();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
